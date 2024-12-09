@@ -1,224 +1,28 @@
-# Grocery Booking API
+# grocery-booking-api
 
-This is a Grocery Booking API designed for two roles: **Admin** and **User**.
+a [Sails v1](https://sailsjs.com) application
 
-## Roles and Responsibilities
 
-### **Admin**
-- Add, update, and delete grocery items.
-- Manage inventory.
-- View all grocery items and inventory status.
+### Links
 
-### **User**
-- View available grocery items.
-- Place orders for grocery items.
-- View their past orders.
++ [Sails framework documentation](https://sailsjs.com/get-started)
++ [Version notes / upgrading](https://sailsjs.com/documentation/upgrading)
++ [Deployment tips](https://sailsjs.com/documentation/concepts/deployment)
++ [Community support options](https://sailsjs.com/support)
++ [Professional / enterprise options](https://sailsjs.com/enterprise)
 
----
 
-## API Endpoints
+### Version info
 
-### **Base URL**: `/api/v1`
+This app was originally generated on Mon Dec 09 2024 19:10:36 GMT+0530 (India Standard Time) using Sails v1.5.14.
 
-### **Admin Endpoints**
+<!-- Internally, Sails used [`sails-generate@2.0.13`](https://github.com/balderdashy/sails-generate/tree/v2.0.13/lib/core-generators/new). -->
 
-1. **Add Grocery Item**
-   - **URL**: `/admin/grocery-items`
-   - **Method**: `POST`
-   - **Request Body**:
-     ```json
-     {
-       "name": "Apple",
-       "price": 50.0,
-       "category": "Fruit",
-       "quantity": 100
-     }
-     ```
-   - **Response**:
-     ```json
-     {
-       "message": "Grocery item added successfully.",
-       "itemId": 1
-     }
-     ```
 
-2. **Update Grocery Item**
-   - **URL**: `/admin/grocery-items/{itemId}`
-   - **Method**: `PUT`
-   - **Request Body**:
-     ```json
-     {
-       "name": "Apple",
-       "price": 55.0,
-       "quantity": 150
-     }
-     ```
-   - **Response**:
-     ```json
-     {
-       "message": "Grocery item updated successfully."
-     }
-     ```
+This project's boilerplate is based on an expanded seed app provided by the [Sails core team](https://sailsjs.com/about) to make it easier for you to build on top of ready-made features like authentication, enrollment, email verification, and billing.  For more information, [drop us a line](https://sailsjs.com/support).
 
-3. **Delete Grocery Item**
-   - **URL**: `/admin/grocery-items/{itemId}`
-   - **Method**: `DELETE`
-   - **Response**:
-     ```json
-     {
-       "message": "Grocery item removed successfully."
-     }
-     ```
 
-4. **View All Grocery Items**
-   - **URL**: `/admin/grocery-items`
-   - **Method**: `GET`
-   - **Response**:
-     ```json
-     [
-       {
-         "id": 1,
-         "name": "Apple",
-         "price": 50.0,
-         "category": "Fruit",
-         "quantity": 100
-       },
-       {
-         "id": 2,
-         "name": "Banana",
-         "price": 20.0,
-         "category": "Fruit",
-         "quantity": 200
-       }
-     ]
-     ```
+<!--
+Note:  Generators are usually run using the globally-installed `sails` CLI (command-line interface).  This CLI version is _environment-specific_ rather than app-specific, thus over time, as a project's dependencies are upgraded or the project is worked on by different developers on different computers using different versions of Node.js, the Sails dependency in its package.json file may differ from the globally-installed Sails CLI release it was originally generated with.  (Be sure to always check out the relevant [upgrading guides](https://sailsjs.com/upgrading) before upgrading the version of Sails used by your app.  If you're stuck, [get help here](https://sailsjs.com/support).)
+-->
 
----
-
-### **User Endpoints**
-
-1. **View Available Grocery Items**
-   - **URL**: `/grocery-items`
-   - **Method**: `GET`
-   - **Response**:
-     ```json
-     [
-       {
-         "id": 1,
-         "name": "Apple",
-         "price": 50.0,
-         "category": "Fruit",
-         "availableQuantity": 100
-       },
-       {
-         "id": 2,
-         "name": "Banana",
-         "price": 20.0,
-         "category": "Fruit",
-         "availableQuantity": 200
-       }
-     ]
-     ```
-
-2. **Place an Order**
-   - **URL**: `/orders`
-   - **Method**: `POST`
-   - **Request Body**:
-     ```json
-     {
-       "userId": 123,
-       "items": [
-         { "itemId": 1, "quantity": 2 },
-         { "itemId": 2, "quantity": 3 }
-       ]
-     }
-     ```
-   - **Response**:
-     ```json
-     {
-       "orderId": 101,
-       "message": "Order placed successfully."
-     }
-     ```
-
-3. **View User Orders**
-   - **URL**: `/users/{userId}/orders`
-   - **Method**: `GET`
-   - **Response**:
-     ```json
-     [
-       {
-         "orderId": 101,
-         "items": [
-           { "name": "Apple", "quantity": 2, "price": 50.0 },
-           { "name": "Banana", "quantity": 3, "price": 20.0 }
-         ],
-         "totalPrice": 160.0,
-         "orderDate": "2024-12-09T10:00:00Z"
-       }
-     ]
-     ```
-
----
-
-## Database Schema
-
-### **Tables**
-
-#### `GroceryItems`
-| Column     | Type          | Constraints       |
-|------------|---------------|-------------------|
-| `id`       | INTEGER       | PRIMARY KEY       |
-| `name`     | VARCHAR(255)  | NOT NULL          |
-| `price`    | DECIMAL(10,2) | NOT NULL          |
-| `category` | VARCHAR(100)  | NOT NULL          |
-| `quantity` | INTEGER       | NOT NULL          |
-
-#### `Users`
-| Column   | Type          | Constraints       |
-|----------|---------------|-------------------|
-| `id`     | INTEGER       | PRIMARY KEY       |
-| `name`   | VARCHAR(255)  | NOT NULL          |
-| `email`  | VARCHAR(255)  | UNIQUE NOT NULL   |
-
-#### `Orders`
-| Column     | Type          | Constraints             |
-|------------|---------------|-------------------------|
-| `id`       | INTEGER       | PRIMARY KEY             |
-| `userId`   | INTEGER       | FOREIGN KEY -> Users.id |
-| `orderDate`| TIMESTAMP     | DEFAULT CURRENT_TIMESTAMP |
-
-#### `OrderItems`
-| Column     | Type          | Constraints             |
-|------------|---------------|-------------------------|
-| `orderId`  | INTEGER       | FOREIGN KEY -> Orders.id|
-| `itemId`   | INTEGER       | FOREIGN KEY -> GroceryItems.id |
-| `quantity` | INTEGER       | NOT NULL                |
-| `price`    | DECIMAL(10,2) | NOT NULL                |
-
----
-
-## Docker Setup
-
-### **Dockerfile**
-```dockerfile
-# Base Image
-FROM node:18-alpine
-
-# Set Working Directory
-WORKDIR /app
-
-# Copy Package Files
-COPY package*.json ./
-
-# Install Dependencies
-RUN npm install
-
-# Copy Application Files
-COPY . .
-
-# Expose Application Port
-EXPOSE 3000
-
-# Run Application
-CMD ["npm", "start"]
