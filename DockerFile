@@ -1,0 +1,17 @@
+# Base image
+FROM node:18-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy the entire application code
+COPY . .
+
+# Install dependencies
+RUN npm install
+
+# Expose the application port
+EXPOSE 1337
+
+# Default command to start the Sails.js application
+CMD ["npm", "start"]
