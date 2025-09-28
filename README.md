@@ -12,7 +12,7 @@ This is a Grocery Booking API designed for two roles: **Admin** and **User**.
 ### **User**
 - View available grocery items.
 - Place orders for grocery items.
-- View their past orders.
+- View their past orders
 
 ---
 
